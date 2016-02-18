@@ -2,10 +2,13 @@ cmake_minimum_required(VERSION 3.3)
 
 # Definitions
 set(PROJECT_NAME_STR crank)
+set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}_lib)
+set(PROJECT_LIB_NAME_STATIC "${PROJECT_LIB_NAME}_static")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
 # Options
+option(CRANK_BUILD_SHARED "Build shared library" ON)
 option(CRANK_BUILD_TESTS "Build tests" OFF)
 
 
@@ -26,6 +29,11 @@ set(CRANK_INCLUDES ${CRANK_INCLUDES} ${PROJECT_SOURCE_DIR}/vendor)
 # Gather the header and source files
 file(GLOB_RECURSE INC_FILES ${PROJECT_SOURCE_DIR}/src/shared/*.hpp)
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/shared/*.cpp)
+
+# Create header and source groups
+source_group("Header Files" FILES ${INC_FILES})
+source_group("Source Files" FILES ${SRC_FILES})
+set(ALL_SOURCE_FILES ${INC_FILES} ${SRC_FILES})
 
 
 ##########################################################################
@@ -52,12 +60,28 @@ endif()
 
 
 ##########################################################################
+# Unit tests
+#
+# Add the unit tests to the build process
+if(CRANK_BUILD_TESTS)
+    # Add the unit test project
+    add_subdirectory(test/)
+endif()
+
+
+##########################################################################
 # Build
 #
 # Assign the include directories
 include_directories(${CRANK_INCLUDES})
+include_directories(${Boost_INCLUDE_DIRS})
+
+if(CRANK_BUILD_SHARED)
+    add_library(${PROJECT_LIB_NAME} SHARED ${ALL_SOURCE_FILES})
+endif()
 
 
 # add the executable
 set(SOURCE_FILES main.cpp)
 add_executable(crank ${PROJECT_SOURCE_DIR}/src/${SOURCE_FILES})
+target_link_libraries(crank ${PROJECT_LIB_NAME})

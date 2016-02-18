@@ -1,8 +1,11 @@
 #include <iostream>
-
-using namespace std;
+#include "shared/time.hpp"
 
 int main() {
-    cout << "Hello, World!" << endl;
+    std::cout << "\nCranking..." << std::endl;
+
+    ws::Time t;
+    t.PrintTime();
+
     return 0;
 }
