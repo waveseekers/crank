@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.3)
 set(PROJECT_NAME_STR crank)
 set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}_lib)
 set(PROJECT_LIB_NAME_STATIC "${PROJECT_LIB_NAME}_static")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
@@ -24,6 +26,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/modules/
 set(CRANK_INCLUDES ${CRANK_INCLUDES} ${PROJECT_SOURCE_DIR}/src)
 set(CRANK_INCLUDES ${CRANK_INCLUDES} ${PROJECT_SOURCE_DIR}/shared)
 set(CRANK_INCLUDES ${CRANK_INCLUDES} ${PROJECT_SOURCE_DIR}/vendor)
+set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 
 
 # Gather the header and source files
@@ -41,7 +44,10 @@ set(ALL_SOURCE_FILES ${INC_FILES} ${SRC_FILES})
 # => Boost_INCLUDE_DIRS		: include directories for Boost
 # => Boost_LIBRARIES	    : Boost libraries
 # => Boost_LIBRARY_DIRS	    : Boost libray directories
-find_package(Boost COMPONENTS system date_time thread REQUIRED)
+find_package(Boost COMPONENTS date_time system thread REQUIRED)
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
 if(NOT Boost_INCLUDE_DIR)
     message(FATAL_ERROR "Boost headers required to build project")
@@ -80,8 +86,7 @@ if(CRANK_BUILD_SHARED)
     add_library(${PROJECT_LIB_NAME} SHARED ${ALL_SOURCE_FILES})
 endif()
 
-
 # add the executable
 set(SOURCE_FILES main.cpp)
 add_executable(crank ${PROJECT_SOURCE_DIR}/src/${SOURCE_FILES})
-target_link_libraries(crank ${PROJECT_LIB_NAME})
+target_link_libraries(crank ${Boost_LIBRARIES} ${PROJECT_LIB_NAME})

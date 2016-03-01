@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <time.h>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 static const int SESSION_SHARD_INTERVAL = 3600000; // 1 hour in milliseconds
 
@@ -21,10 +23,15 @@ namespace ws
 class Time
 {
 public:
-    Time();
-    ~Time();
+                        Time( const std::string& );
+                        ~Time();
 
-    void	    PrintTime();
+    void	            SetTimestamp( const std::string& );
+    void	            PrintTime();
+
+private:
+//    unsigned long int	timestamp_;
+
 
 };
 

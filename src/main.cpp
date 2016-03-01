@@ -4,7 +4,7 @@
 int main() {
     std::cout << "\nCranking..." << std::endl;
 
-    ws::Time t;
+    ws::Time t("2016-01-01 00:00:00");
     t.PrintTime();
 
     return 0;
