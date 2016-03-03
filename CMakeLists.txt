@@ -33,6 +33,7 @@ set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 file(GLOB_RECURSE INC_FILES ${PROJECT_SOURCE_DIR}/src/shared/*.hpp)
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/shared/*.cpp)
 
+
 # Create header and source groups
 source_group("Header Files" FILES ${INC_FILES})
 source_group("Source Files" FILES ${SRC_FILES})
@@ -44,8 +45,8 @@ set(ALL_SOURCE_FILES ${INC_FILES} ${SRC_FILES})
 # => Boost_INCLUDE_DIRS		: include directories for Boost
 # => Boost_LIBRARIES	    : Boost libraries
 # => Boost_LIBRARY_DIRS	    : Boost libray directories
-find_package(Boost COMPONENTS date_time system thread REQUIRED)
-set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost COMPONENTS date_time REQUIRED)
+set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
@@ -82,11 +83,7 @@ endif()
 include_directories(${CRANK_INCLUDES})
 include_directories(${Boost_INCLUDE_DIRS})
 
-if(CRANK_BUILD_SHARED)
-    add_library(${PROJECT_LIB_NAME} SHARED ${ALL_SOURCE_FILES})
-endif()
-
 # add the executable
-set(SOURCE_FILES main.cpp)
-add_executable(crank ${PROJECT_SOURCE_DIR}/src/${SOURCE_FILES})
-target_link_libraries(crank ${Boost_LIBRARIES} ${PROJECT_LIB_NAME})
+set(SOURCE_FILES src/main.cpp ${SRC_FILES} ${INC_FILES})
+add_executable(crank ${SOURCE_FILES})
+target_link_libraries(crank ${Boost_LIBRARIES})
