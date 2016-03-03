@@ -26,11 +26,13 @@ public:
                         Time( const std::string& );
                         ~Time();
 
-    void	            SetTimestamp( const std::string& );
     void	            PrintTime();
+    void	            SetTimestamp( const std::string& );
+    unsigned long int	GetTimestampMilliseconds();
+
 
 private:
-//    unsigned long int	timestamp_;
+    unsigned long int	timestamp_;
 
 
 };
