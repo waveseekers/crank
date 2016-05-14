@@ -86,4 +86,4 @@ include_directories(${Boost_INCLUDE_DIRS})
 # add the executable
 set(SOURCE_FILES src/main.cpp ${SRC_FILES} ${INC_FILES})
 add_executable(crank ${SOURCE_FILES})
-target_link_libraries(crank ${Boost_LIBRARIES})
+target_link_libraries(crank ${Boost_LIBRARIES} ${Cassandra_LIBRARIES})

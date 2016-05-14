@@ -1,5 +1,6 @@
 #include <iostream>
 #include "shared/time.hpp"
+#include "vendor/cassandra/cassandra.h"
 
 int main() {
     std::cout << "\nCranking..." << std::endl;
